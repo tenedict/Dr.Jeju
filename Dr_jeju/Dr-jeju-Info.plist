@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key></key>
+	<string></string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFPlugInDynamicRegistration</key>
+	<false/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>import SwiftUI
+
+struct ContentView: View {
+    @State private var response = ""
+    @State private var isLoading = false
+
+    var body: some View {
+        VStack {
+            Text("API Response:")
+                .font(.title)
+                .padding()
+            
+            if isLoading {
+                ProgressView("Loading...")
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
+            } else {
+                Text(response)
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+            
+            Button("Send Request") {
+                fetchAPIResponse()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+        }
+        .padding()
+    }
+
+    func fetchAPIResponse() {
+        guard let url = URL(string: "http://34.22.80.135:3389/api/gpt/") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let json: [String: Any] = ["prompt": "Hello, GPT!"]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else { return }
+        request.httpBody = jsonData
+
+        isLoading = true
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                self.isLoading = false
+
+                if let error = error {
+                    self.response = "Error: \(error.localizedDescription)"
+                    return
+                }
+
+                guard let data = data else {
+                    self.response = "No data received"
+                    return
+                }
+
+                if let decodedResponse = try? JSONDecoder().decode(APIResponse.self, from: data) {
+                    self.response = decodedResponse.response
+                } else {
+                    self.response = "Failed to decode response"
+                }
+            }
+        }.resume()
+    }
+}
+
+struct APIResponse: Codable {
+    let response: String
+}
+
+@main
+struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+  import SwiftUI
+
+struct ContentView: View {
+    @State private var response = ""
+    @State private var isLoading = false
+
+    var body: some View {
+        VStack {
+            Text("API Response:")
+                .font(.title)
+                .padding()
+            
+            if isLoading {
+                ProgressView("Loading...")
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
+            } else {
+                Text(response)
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+            
+            Button("Send Request") {
+                fetchAPIResponse()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+        }
+        .padding()
+    }
+
+    func fetchAPIResponse() {
+        guard let url = URL(string: "http://34.22.80.135:3389/api/gpt/") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let json: [String: Any] = ["prompt": "Hello, GPT!"]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else { return }
+        request.httpBody = jsonData
+
+        isLoading = true
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                self.isLoading = false
+
+                if let error = error {
+                    self.response = "Error: \(error.localizedDescription)"
+                    return
+                }
+
+                guard let data = data else {
+                    self.response = "No data received"
+                    return
+                }
+
+                if let decodedResponse = try? JSONDecoder().decode(APIResponse.self, from: data) {
+                    self.response = decodedResponse.response
+                } else {
+                    self.response = "Failed to decode response"
+                }
+            }
+        }.resume()
+    }
+}
+
+struct APIResponse: Codable {
+    let response: String
+}
+
+@main
+struct MyApp: App {
+    var body: some S</key>
+	<string></string>
+</dict>
+</plist>
