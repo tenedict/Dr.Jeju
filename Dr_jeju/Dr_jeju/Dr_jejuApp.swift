@@ -11,7 +11,7 @@ import SwiftUI
 struct Dr_jejuApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            UserSelectView()
         }
     }
 }
